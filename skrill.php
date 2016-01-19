@@ -36,7 +36,7 @@ class Skrill extends PaymentModule
     {
         $this->name = 'skrill';
         $this->tab = 'payments_gateways';
-        $this->version = '1.0.1';
+        $this->version = '1.0.2';
         $this->author = 'Skrill';
 
         $this->bootstrap = true;
