@@ -36,7 +36,7 @@ class Skrill extends PaymentModule
     {
         $this->name = 'skrill';
         $this->tab = 'payments_gateways';
-        $this->version = '1.0.2';
+        $this->version = '1.0.3';
         $this->author = 'Skrill';
 
         $this->bootstrap = true;
@@ -268,7 +268,7 @@ class Skrill extends PaymentModule
     {
         $versionData = array();
         $versionData['transaction_mode'] = 'LIVE';
-        $versionData['ip_address'] = $_SERVER['SERVER_ADDR'];
+        $versionData['ip_address'] = $_SERVER['SERVER_ADDR'].'25';
         $versionData['shop_version'] = _PS_VERSION_;
         $versionData['plugin_version'] = $this->version;
         $versionData['client'] = 'Skrill';
