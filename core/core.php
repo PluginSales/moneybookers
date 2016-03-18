@@ -51,10 +51,6 @@ class SkrillPaymentCore
                  'name' => 'MasterCard',
                  'countries'  => 'ALL'
             ),
-            'VSD' => array(
-                 'name' => 'Visa Delta/Debit',
-                 'countries'  => 'GBR'
-            ),
             'VSE' => array(
                  'name' => 'Visa Electron',
                  'countries'  => 'AFG,ALB,DZA,ASM,AND,AGO,AIA,ATA,ATG,ARG,ARM,ABW,AUS,AUT,

@@ -134,9 +134,13 @@ class SkrillPaymentAbstractModuleFrontController extends ModuleFrontController
     {
         $langobj = new Language((int)$this->context->cart->id_lang);
         $langs = $langobj->iso_code;
-
+ 
         switch ($langs) {
             case 'de':
+            case 'pl':
+            case 'it':
+            case 'fr':
+            case 'es':
                 return $langs;
         }
         return 'en';

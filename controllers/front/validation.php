@@ -39,6 +39,7 @@ class SkrillValidationModuleFrontController extends ModuleFrontController
 
     private function processPayment($transactionId)
     {
+        VersionTracker::sendVersionTracker($this->module->getVersionData());
         $fieldParams = $this->module->getSkrillCredentials();
         $fieldParams['type'] = 'trn_id';
         $fieldParams['id'] = $transactionId;
@@ -64,9 +65,9 @@ class SkrillValidationModuleFrontController extends ModuleFrontController
         $currency = $this->context->currency;
         $orderTotal = (float)$cart->getOrderTotal(true, Cart::BOTH);
         $responseCheckout = SkrillPaymentCore::getResponseArray($paymentResult);
+
         $transactionLog = $this->setTransactionLog($transactionId, $currency, $orderTotal, $responseCheckout);
 
-        VersionTracker::sendVersionTracker($this->module->getVersionData());
         $this->saveTransactionLog($transactionLog, $responseCheckout);
         $isFraud = $this->isFraud($orderTotal, $responseCheckout);
         $isAuthorized = $this->isAuthorized();
@@ -119,7 +120,8 @@ class SkrillValidationModuleFrontController extends ModuleFrontController
     {
         $refundedStatus =  $this->module->refundedStatus;
         $refundFailedStatus =  $this->module->refundFailedStatus;
-        $refundResult = $this->module->refundOrder($responseCheckout['mb_transaction_id'], $this->refundType);
+        $refId = '';
+        $refundResult = $this->module->refundOrder($responseCheckout, $refId, $this->refundType);
         $refundStatus = (string) $refundResult->status;
         if ($refundStatus == $this->module->processedStatus) {
             $this->module->updateTransLogStatus($responseCheckout['mb_transaction_id'], $refundedStatus);
