@@ -41,7 +41,8 @@ $(document).ready(function(){
 		'pwy',
 		'epy',
 		'glu',	
-		'ali',	
+		'ali',
+		'ntl'	
 	];
 
 	var list_cards = [

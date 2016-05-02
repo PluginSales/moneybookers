@@ -36,7 +36,7 @@ class Skrill extends PaymentModule
     {
         $this->name = 'skrill';
         $this->tab = 'payments_gateways';
-        $this->version = '1.0.4';
+        $this->version = '1.0.5';
         $this->author = 'Skrill';
 
         $this->bootstrap = true;
@@ -164,6 +164,7 @@ class Skrill extends PaymentModule
             || !Configuration::deleteByName('SKRILL_EPY_ACTIVE')
             || !Configuration::deleteByName('SKRILL_GLU_ACTIVE')
             || !Configuration::deleteByName('SKRILL_ALI_ACTIVE')
+            || !Configuration::deleteByName('SKRILL_NTL_ACTIVE')
 
             || !Configuration::deleteByName('SKRILL_WLT_MODE')
             || !Configuration::deleteByName('SKRILL_PSC_MODE')
@@ -191,6 +192,7 @@ class Skrill extends PaymentModule
             || !Configuration::deleteByName('SKRILL_EPY_MODE')
             || !Configuration::deleteByName('SKRILL_GLU_MODE')
             || !Configuration::deleteByName('SKRILL_ALI_MODE')
+            || !Configuration::deleteByName('SKRILL_NTL_MODE')
 
             || !Configuration::deleteByName('SKRILL_FLEXIBLE_SORT')
             || !Configuration::deleteByName('SKRILL_WLT_SORT')
@@ -219,6 +221,7 @@ class Skrill extends PaymentModule
             || !Configuration::deleteByName('SKRILL_EPY_SORT')
             || !Configuration::deleteByName('SKRILL_GLU_SORT')
             || !Configuration::deleteByName('SKRILL_ALI_SORT')
+            || !Configuration::deleteByName('SKRILL_NTL_SORT')
 
             || !$this->unregisterHook('payment')
             || !$this->unregisterHook('paymentReturn')
@@ -746,6 +749,13 @@ class Skrill extends PaymentModule
                     $paymentLocale = $this->l('SKRILL_FRONTEND_PM_ALI');
                 }
                 break;
+            case 'SKRILL_FRONTEND_PM_NTL':
+                if ($this->l('SKRILL_FRONTEND_PM_NTL') == "SKRILL_FRONTEND_PM_NTL") {
+                    $paymentLocale = "Neteller";
+                } else {
+                    $paymentLocale = $this->l('SKRILL_FRONTEND_PM_NTL');
+                }
+                break;
             default:
                 if ($this->l('SKRILL_FRONTEND_PM_FLEXIBLE') == "SKRILL_FRONTEND_PM_FLEXIBLE") {
                     $paymentLocale = "All Cards and Alternative Payment Methods";
@@ -948,6 +958,13 @@ class Skrill extends PaymentModule
                     $paymentLocale = "Alipay";
                 } else {
                     $paymentLocale = $this->l('SKRILL_BACKEND_PM_ALI');
+                }
+                break;
+            case 'SKRILL_BACKEND_PM_NTL':
+                if ($this->l('SKRILL_BACKEND_PM_NTL') == "SKRILL_BACKEND_PM_NTL") {
+                    $paymentLocale = "Neteller";
+                } else {
+                    $paymentLocale = $this->l('SKRILL_BACKEND_PM_NTL');
                 }
                 break;
             default:
@@ -1617,6 +1634,21 @@ class Skrill extends PaymentModule
             $locale['active']['ali']['desc'] = $this->l('SKRILL_BACKEND_TT_ALI');
         }
 
+        $locale['active']['ntl']['desc'] = "All except for
+            Afghanistan, Armenia, Bhutan, Bouvet Island,
+            Myanmar, China, (Keeling) Islands, Democratic
+            Republic of Congo, Cook Islands, Cuba, Eritrea,
+            South Georgia and the South Sandwich Islands,
+            Guam, Guinea, Territory of Heard Island and
+            McDonald Islands, Iran, Iraq, Cote d'Ivoire,
+            Kazakhstan, North Korea, Kyrgyzstan, Liberia,
+            Libya, Mongolia, Northern Mariana Islands,
+            Federated States of Micronesia, Marshall
+            Islands, Palau, Pakistan, East Timor, Puerto Rico,
+            Sierra Leone, Somalia, Zimbabwe, Sudan, Syria,
+            Tajikistan, Turkmenistan, Uganda, United
+            States, US Virgin Islands, Uzbekistan, and Yemen";
+            
         return $locale;
     }
 
