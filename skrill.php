@@ -36,7 +36,7 @@ class Skrill extends PaymentModule
     {
         $this->name = 'skrill';
         $this->tab = 'payments_gateways';
-        $this->version = '1.0.5';
+        $this->version = '1.0.6';
         $this->author = 'Skrill';
 
         $this->bootstrap = true;
@@ -282,7 +282,7 @@ class Skrill extends PaymentModule
     public function hookdisplayAdminOrder()
     {
         $orderId =Tools::getValue('id_order');
-        $sql = "SELECT * FROM skrill_order_ref WHERE id_order ='".$orderId."'";
+        $sql = "SELECT * FROM skrill_order_ref WHERE id_order ='".(int)$orderId."'";
         $row = Db::getInstance()->getRow($sql);
         if ($row) {
             $paymentInfo = array();
@@ -307,7 +307,7 @@ class Skrill extends PaymentModule
             $buttonUpdateOrder = ($row['order_status'] == $this->refundedStatus) ? false : true;
 
             $this->context->smarty->assign(array(
-                'orderId'		=> $orderId,
+                'orderId'		=> (int)$orderId,
                 'paymentInfo' => $paymentInfo,
                 'buttonUpdateOrder'	=> $buttonUpdateOrder
             ));
@@ -333,7 +333,7 @@ class Skrill extends PaymentModule
 
     private function getCountryIdByIso($countryIso2)
     {
-        $sql = "SELECT `id_country` FROM `"._DB_PREFIX_."country` WHERE `iso_code` = '".$countryIso2."'";
+        $sql = "SELECT `id_country` FROM `"._DB_PREFIX_."country` WHERE `iso_code` = '".pSQL($countryIso2)."'";
         $result = Db::getInstance()->getRow($sql);
         return (int)$result['id_country'];
     }
@@ -353,7 +353,7 @@ class Skrill extends PaymentModule
             }
             unset ($this->context->cookie->skrill_status_refund);
         }
-        $sql = "SELECT * FROM skrill_order_ref WHERE id_order ='".$orderId."'";
+        $sql = "SELECT * FROM skrill_order_ref WHERE id_order ='".(int)$orderId."'";
         $row = Db::getInstance()->getRow($sql);
         
         if ($row) {
@@ -369,7 +369,7 @@ class Skrill extends PaymentModule
                     $this->updateTransLogStatus($row['ref_id'], $responseUpdateOrder['status']);
                     $successMessage = "updateOrder";
 
-                    $sql = "SELECT * FROM skrill_order_ref WHERE id_order ='".$orderId."'";
+                    $sql = "SELECT * FROM skrill_order_ref WHERE id_order ='".(int)$orderId."'";
                     $row = Db::getInstance()->getRow($sql);
                 } else {
                     $errorMessage = "updateOrder";
@@ -501,7 +501,7 @@ class Skrill extends PaymentModule
     public function refundOrder($params, &$refId, $refundType = 'refund')
     {
         if ($refundType != "fraud") {
-            $sql = "SELECT * FROM skrill_order_ref WHERE id_order ='".$params['id_order']."'";
+            $sql = "SELECT * FROM skrill_order_ref WHERE id_order ='".(int)$params['id_order']."'";
             $row = Db::getInstance()->getRow($sql);
         }
 
@@ -551,7 +551,7 @@ class Skrill extends PaymentModule
 
     public function updateTransLogStatus($refId, $orderStatus)
     {
-        $sql = "UPDATE skrill_order_ref SET order_status = '".$orderStatus."' where ref_id = '".$refId."'";
+        $sql = "UPDATE skrill_order_ref SET order_status = '".pSQL($orderStatus)."' where ref_id = '".pSQL($refId)."'";
         if (!Db::getInstance()->execute($sql)) {
             die('Erreur etc.');
         }

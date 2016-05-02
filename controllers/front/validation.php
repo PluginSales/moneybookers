@@ -239,12 +239,12 @@ class SkrillValidationModuleFrontController extends ModuleFrontController
     {
         $sql = "INSERT INTO skrill_order_ref
             (transaction_id, payment_method, order_status, ref_id, payment_code, currency, amount) VALUES "."('".
-                $transactionLog['transaction_id']."','".
-                $transactionLog['payment_method']."','".
-                $responseCheckout['status']."','".
-                $responseCheckout['mb_transaction_id']."','".
-                $transactionLog['payment_type']."','".
-                $transactionLog['currency']."','".
+                pSQL($transactionLog['transaction_id'])."','".
+                pSQL($transactionLog['payment_method'])."','".
+                pSQL($responseCheckout['status'])."','".
+                pSQL($responseCheckout['mb_transaction_id'])."','".
+                pSQL($transactionLog['payment_type'])."','".
+                pSQL($transactionLog['currency'])."','".
                 (float)$transactionLog['amount'].
             "')";
         if (!Db::getInstance()->execute($sql)) {
@@ -262,8 +262,8 @@ class SkrillValidationModuleFrontController extends ModuleFrontController
             $updateInfo = ", add_information = '".serialize($additionalInfo)."'";
         }
 
-        $sql = "UPDATE skrill_order_ref SET id_order = '".$orderId."'
-            ".$updateInfo." where ref_id = '".$responseCheckout['mb_transaction_id']."'";
+        $sql = "UPDATE skrill_order_ref SET id_order = '".(int)$orderId."'
+            ".$updateInfo." where ref_id = '".pSQL($responseCheckout['mb_transaction_id'])."'";
         if (!Db::getInstance()->execute($sql)) {
             die('Erreur etc.');
         }
